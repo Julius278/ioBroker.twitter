@@ -7,6 +7,9 @@
 // The adapter-core module gives you access to the core ioBroker functions
 // you need to create an adapter
 const utils = require("@iobroker/adapter-core");
+const Twit = require("twit");
+
+var T;
 
 // Load your modules here, e.g.:
 // const fs = require("fs");
@@ -36,20 +39,73 @@ class TestProject extends utils.Adapter {
 
 		// The adapters config (in the instance object everything under the attribute "native") is accessible via
 		// this.config:
-		this.log.info("config option1: " + this.config.option1);
-		this.log.info("config option2: " + this.config.option2);
+		this.log.info("config option1: " + this.config.consumerKey);
+		this.log.info("config option2: " + this.config.accessToken);
+
+		if(this.config.consumerKey && this.config.consumerSecret && this.config.accessToken && this.config.accessTokenSecret){
+			this.setCredentialsFromConfig();
+		}
 
 		/*
 		For every state in the system there has to be also an object of type state
 		Here a simple template for a boolean variable named "testVariable"
 		Because every adapter instance uses its own unique namespace variable names can't collide with other adapters variables
 		*/
+
+		await this.setObjectAsync("username", {
+			type: "state",
+			common: {
+				name: "username",
+				type: "string",
+				role: "text",
+				read: true,
+				write: true,
+			},
+			native: {},
+		});
+
 		await this.setObjectAsync("testVariable", {
 			type: "state",
 			common: {
 				name: "testVariable",
 				type: "boolean",
 				role: "indicator",
+				read: true,
+				write: true,
+			},
+			native: {},
+		});
+
+		await this.setObjectAsync("lastTweet", {
+			type: "state",
+			common: {
+				name: "lastTweet",
+				type: "string",
+				role: "text",
+				read: true,
+				write: true,
+			},
+			native: {},
+		});
+
+		await this.setObjectAsync("lastFollower", {
+			type: "state",
+			common: {
+				name: "lastTweet",
+				type: "string",
+				role: "text",
+				read: true,
+				write: true,
+			},
+			native: {},
+		});
+
+		await this.setObjectAsync("lastFollower", {
+			type: "state",
+			common: {
+				name: "lastTweet",
+				type: "string",
+				role: "text",
 				read: true,
 				write: true,
 			},
@@ -122,6 +178,16 @@ class TestProject extends utils.Adapter {
 			// The state was deleted
 			this.log.info(`state ${id} deleted`);
 		}
+	}
+
+	//this.config.consumerKey && this.config.consumerSecret && this.config.accessToken && this.config.accessTokenSecret
+	setCredentialsFromConfig(){ 
+		T = new Twit({
+			consumer_key: this.config.consumerKey,
+			consumer_secret: this.config.consumerSecret,
+			access_token: this.config.accessToken,
+			access_token_secret: this.config.accessTokenSecret
+		});
 	}
 
 	// /**

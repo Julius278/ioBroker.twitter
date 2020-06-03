@@ -19,7 +19,8 @@
     "url": "https://github.com/Julius278/ioBroker.test_project"
   },
   "dependencies": {
-    "@iobroker/adapter-core": "^2.4.0"
+    "@iobroker/adapter-core": "^2.4.0",
+    "twit": "^2.2.11"
   },
   "devDependencies": {
     "@iobroker/testing": "^2.2.0",
