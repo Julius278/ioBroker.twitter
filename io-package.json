@@ -1,0 +1,79 @@
+{
+	"common": {
+		"name": "test_project",
+		"version": "0.0.1",
+		"news": {
+			"0.0.1": {
+				"en": "initial release",
+				"de": "Erstveröffentlichung",
+				"ru": "Начальная версия",
+				"pt": "lançamento inicial",
+				"nl": "Eerste uitgave",
+				"fr": "Première version",
+				"it": "Versione iniziale",
+				"es": "Versión inicial",
+				"pl": "Pierwsze wydanie",
+				"zh-cn": "首次出版"
+			}
+		},
+		"title": "Test_Projekt",
+		"titleLang": {
+			"en": "Test_Projekt",
+			"de": "Test_Projekt",
+			"ru": "Test_Projekt",
+			"pt": "Test_Projekt",
+			"nl": "Test_Projekt",
+			"fr": "Test_Projekt",
+			"it": "Test_Projekt",
+			"es": "Test_Projekt",
+			"pl": "Test_Projekt",
+			"zh-cn": "Test_Projekt"
+		},
+		"desc": {
+			"en": "test_project",
+			"de": "test_project",
+			"ru": "test_project",
+			"pt": "test_project",
+			"nl": "test_project",
+			"fr": "test_project",
+			"it": "test_project",
+			"es": "prueba_proyecto",
+			"pl": "test_project",
+			"zh-cn": "test_project"
+		},
+		"authors": [
+			"Julius278 <iobroker@juliuslauterbach.de>"
+		],
+		"keywords": [
+			"ioBroker",
+			"template",
+			"Smart Home",
+			"home automation"
+		],
+		"license": "MIT",
+		"platform": "Javascript/Node.js",
+		"main": "main.js",
+		"icon": "test_project.png",
+		"enabled": true,
+		"extIcon": "https://raw.githubusercontent.com/Julius278/ioBroker.test_project/master/admin/test_project.png",
+		"readme": "https://github.com/Julius278/ioBroker.test_project/blob/master/README.md",
+		"loglevel": "info",
+		"mode": "daemon",
+		"type": "lighting",
+		"compact": true,
+		"connectionType": "cloud",
+		"dataSource": "poll",
+		"materialize": true,
+		"dependencies": [
+			{
+				"js-controller": ">=1.4.2"
+			}
+		]
+	},
+	"native": {
+		"option1": true,
+		"option2": "42"
+	},
+	"objects": [],
+	"instanceObjects": []
+}
