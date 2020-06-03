@@ -73,8 +73,7 @@
 		]
 	},
 	"native": {
-		"option1": true,
-		"option2": "42",
+		"username": "",
 		"consumerKey": "",
 		"consumerSecret": "",
 		"accessToken": "",

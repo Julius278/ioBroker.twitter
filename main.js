@@ -39,11 +39,10 @@ class TestProject extends utils.Adapter {
 
 		// The adapters config (in the instance object everything under the attribute "native") is accessible via
 		// this.config:
-		this.log.info("config option1: " + this.config.consumerKey);
-		this.log.info("config option2: " + this.config.accessToken);
 
-		if(this.config.consumerKey && this.config.consumerSecret && this.config.accessToken && this.config.accessTokenSecret){
+		if(this.checkIfCredentials()){
 			this.setCredentialsFromConfig();
+			
 		}
 
 		/*
@@ -100,10 +99,10 @@ class TestProject extends utils.Adapter {
 			native: {},
 		});
 
-		await this.setObjectAsync("lastFollower", {
+		await this.setObjectAsync("test", {
 			type: "state",
 			common: {
-				name: "lastTweet",
+				name: "test",
 				type: "string",
 				role: "text",
 				read: true,
@@ -120,21 +119,26 @@ class TestProject extends utils.Adapter {
 		you will notice that each setState will cause the stateChange event to fire (because of above subscribeStates cmd)
 		*/
 		// the variable testVariable is set to true as command (ack=false)
-		await this.setStateAsync("testVariable", true);
+		//await this.setStateAsync("testVariable", true);
 
 		// same thing, but the value is flagged "ack"
 		// ack should be always set to true if the value is received from or acknowledged from the target system
-		await this.setStateAsync("testVariable", { val: true, ack: true });
+		if(this.config.username){
+			await this.setStateAsync("username", { val: this.config.username, ack: true });
+		}
 
 		// same thing, but the state is deleted after 30s (getState will return null afterwards)
-		await this.setStateAsync("testVariable", { val: true, ack: true, expire: 30 });
+		//await this.setStateAsync("username", { val: this.config.username, ack: true, expire: 30 });
 
 		// examples for the checkPassword/checkGroup functions
-		let result = await this.checkPasswordAsync("admin", "iobroker");
+		/*let result = await this.checkPasswordAsync("admin", "iobroker");
 		this.log.info("check user admin pw iobroker: " + result);
 
 		result = await this.checkGroupAsync("admin", "admin");
-		this.log.info("check group user admin group admin: " + result);
+		this.log.info("check group user admin group admin: " + result);*/
+
+
+		this.getYourFollowersIDs();
 	}
 
 	/**
@@ -180,7 +184,7 @@ class TestProject extends utils.Adapter {
 		}
 	}
 
-	//this.config.consumerKey && this.config.consumerSecret && this.config.accessToken && this.config.accessTokenSecret
+	//Set Twitter Credentials from the entered config
 	setCredentialsFromConfig(){ 
 		T = new Twit({
 			consumer_key: this.config.consumerKey,
@@ -189,6 +193,63 @@ class TestProject extends utils.Adapter {
 			access_token_secret: this.config.accessTokenSecret
 		});
 	}
+
+	checkIfCredentials(){
+		if(this.config.consumerKey && this.config.consumerSecret && this.config.accessToken && this.config.accessTokenSecret){
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	postHelloWorldTweet() {
+		if(this.checkIfCredentials()){
+			let d = "twitter-Test, before Hello World Request";
+			T.post('statuses/update', { status: 'hello world!' }, function (err, data, response) {
+				console.log(data);
+				d = data;
+			});
+			this.log.info(d);  
+		}
+	}
+	
+	setCredentials(consumer_key, consumer_secret, access_token, access_token_secret) {
+		T = new Twit({
+			consumer_key: consumer_key,
+		  	consumer_secret: consumer_secret,
+		  	access_token: access_token,
+		  	access_token_secret: access_token_secret,
+		});
+	}
+	
+	getYourFollowersIDs() {
+		let d = "twitter-Test, before Hello World Request";
+		if(this.checkIfCredentials()){
+			T.get('followers/ids', { screen_name: this.config.username }, function (err, data, response) {
+				console.log(data.ids);
+				d = data.ids[0];
+			});
+		}
+		this.log.info(d);
+		this.setStateAsync("lastFollower", { val: d, ack: true });
+	}
+	
+	getYourLastFollower() {
+		T.get('followers/list', { screen_name: this.config.username }, function (err, data, response) {
+		 	console.log(data.users[0].id);
+		  	console.log(data.users[0].name);
+		  	console.log(data.users[0].screen_name);
+		});
+	}  
+	
+	/*
+	//	funktioniert noch nicht..
+
+	getUser(id) {
+		T.get('users/:id', { id: id }, function (err, data, response) {
+		  	console.log(data)
+		});
+	}*/
 
 	// /**
 	//  * Some message was sent to this instance over message box. Used by email, pushover, text2speech, ...
