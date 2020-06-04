@@ -8,15 +8,14 @@
 // you need to create an adapter
 const utils = require("@iobroker/adapter-core");
 const Twit = require("twit");
-const Tweet = require("./classes/Tweet");
+const Follower = require("./classes/Follower");
+const UserInformation = require("./classes/UserInformation");
 
 const TAG = "ioBroker Twitter - "
 
 var T;
-var tweet;
-var adapter;
 
-class TestProject extends utils.Adapter {
+class TwitterProject extends utils.Adapter {
 
 	/**
 	 * @param {Partial<utils.AdapterOptions>} [options={}]
@@ -24,15 +23,13 @@ class TestProject extends utils.Adapter {
 	constructor(options) {
 		super({
 			...options,
-			name: "test_project",
+			name: "twitter",
 		});
 		this.on("ready", this.onReady.bind(this));
 		this.on("objectChange", this.onObjectChange.bind(this));
 		this.on("stateChange", this.onStateChange.bind(this));
 		this.on("message", this.onMessage.bind(this));
 		this.on("unload", this.onUnload.bind(this));
-
-		adapter = utils.Adapter(this);
 	}
 
 	/**
@@ -46,7 +43,17 @@ class TestProject extends utils.Adapter {
 
 		if(this.checkIfCredentials()){
 			this.setCredentialsFromConfig();
-			
+			this.twitAuth((u)=>{
+				this.userId = u.id;
+				this.username = u.screen_name;
+				this.userDescription = u.description;
+				this.followers_count = u.followers_count;
+				this.profile_image_url = u.profile_image_url;
+				this.created_at = u.created_at;
+			});
+			this.getYourLastFollower((follower)=>{
+				this.lastFollower = follower.screen_name;
+			});
 		}
 
 		/*
@@ -103,10 +110,58 @@ class TestProject extends utils.Adapter {
 			native: {},
 		});
 
-		await this.setObjectAsync("test", {
+		await this.setObjectAsync("own_id", {
 			type: "state",
 			common: {
-				name: "test",
+				name: "own_id",
+				type: "string",
+				role: "text",
+				read: true,
+				write: true,
+			},
+			native: {},
+		});
+
+		await this.setObjectAsync("own_description", {
+			type: "state",
+			common: {
+				name: "own_description",
+				type: "string",
+				role: "text",
+				read: true,
+				write: true,
+			},
+			native: {},
+		});
+
+		await this.setObjectAsync("followers_count", {
+			type: "state",
+			common: {
+				name: "followers_count",
+				type: "string",
+				role: "text",
+				read: true,
+				write: true,
+			},
+			native: {},
+		});
+
+		await this.setObjectAsync("profile_image_url", {
+			type: "state",
+			common: {
+				name: "profile_image_url",
+				type: "string",
+				role: "text",
+				read: true,
+				write: true,
+			},
+			native: {},
+		});
+
+		await this.setObjectAsync("created_at", {
+			type: "state",
+			common: {
+				name: "created_at",
 				type: "string",
 				role: "text",
 				read: true,
@@ -129,6 +184,27 @@ class TestProject extends utils.Adapter {
 		// ack should be always set to true if the value is received from or acknowledged from the target system
 		if(this.config.username){
 			await this.setStateAsync("username", { val: this.config.username, ack: true });
+		} else if(this.username){
+			await this.setStateAsync("username", { val: this.username, ack: true });
+			this.config.username = this.username;
+		}
+		if(this.lastFollower){
+			await this.setStateAsync("lastFollower", { val: this.lastFollower, ack: true });
+		}
+		if(this.userId){
+			await this.setStateAsync("own_id", { val: this.userId, ack: true });
+		}
+		if(this.userDescription){
+			await this.setStateAsync("own_description", { val: this.userDescription, ack: true });
+		}
+		if(this.followers_count){
+			await this.setStateAsync("followers_count", { val: this.followers_count, ack: true });
+		}
+		if(this.profile_image_url){
+			await this.setStateAsync("profile_image_url", { val: this.profile_image_url, ack: true });
+		}
+		if(this.created_at){
+			await this.setStateAsync("created_at", { val: this.created_at, ack: true });
 		}
 
 		// same thing, but the state is deleted after 30s (getState will return null afterwards)
@@ -235,11 +311,6 @@ class TestProject extends utils.Adapter {
 	postHelloWorldTweet(callback) {
 		let s = Math.floor(Math.random() * 100) + 1;
 		let tweetText = 'Hello world! This is my iobroker test tweet. Random number: '+s;
-		/*if(this.checkIfCredentials()){
-			T.post('statuses/update', { status: text }, function (err, data, response) {
-				callback(data.text);
-			});
-		}*/
 		this.postTweet(tweetText, (postedText)=>{
 			callback(postedText);
 		});
@@ -287,17 +358,22 @@ class TestProject extends utils.Adapter {
 	 * 
 	 * @param {*} callback 
 	 */
-	getListOfYourFollowersIDs(callback) {
-		if(this.checkIfCredentials()){
-			T.get('followers/ids', { screen_name: this.config.username }, function (err, data, response) {
+	getListOfYourFollowers(callback) {
+		if(this.checkIfCredentials() && this.config.username ){
+			T.get('followers/list', { screen_name: this.config.username }, function (err, data, response) {
 				if(err){
 					callback(err);
 				} else {
-					callback(data);
+					let u = [];
+					data.users.forEach(e => {
+						let f = new Follower(e.id, e.screen_name, e.followers_count);
+						u.push(f);
+					});
+					callback(u);
 				}
 			});
 		}
-	}
+	} 
 	
 	/**
 	 * needs more implementation
@@ -307,12 +383,17 @@ class TestProject extends utils.Adapter {
 	 * @param {*} callback 
 	 */
 	getYourLastFollower(callback) {
-		T.get('followers/list', { screen_name: this.config.username }, function (err, data, response) {
-		 	console.log(data.users[0].id);
-		  	console.log(data.users[0].name);
-		  	console.log(data.users[0].screen_name);
-		});
-	}  
+		if(this.checkIfCredentials() && this.config.username ){
+			T.get('followers/list', { screen_name: this.config.username }, function (err, data, response) {
+				if(err){
+					callback(err);
+				} else {
+					let u = data.users[0];
+					callback(new Follower(u.id, u.screen_name, u.followers_count));
+				}
+			});
+		}
+	} 
 	
 	/**
 	 * 
@@ -321,19 +402,16 @@ class TestProject extends utils.Adapter {
 	 * @param {*} callback 
 	 */
 	twitAuth(callback){
-		return T.get('account/verify_credentials', { skip_status: true })
-			.catch(function (err) {
-				console.log('caught error', err.stack)
-			})
-			.then(function (result) {
-				// `result` is an Object with keys "data" and "resp".
-				// `data` and `resp` are the same objects as the ones passed
-				// to the callback.
-				// See https://github.com/ttezel/twit#tgetpath-params-callback
-				// for details.
-				console.log(TAG + 'data', result.data.screen_name);
-				return result.data;
+		if(this.checkIfCredentials()){
+			T.get('account/verify_credentials', { skip_status: true }, function (err, data, response) {
+				if(err){
+					callback(err);
+				} else {
+					let u = data;
+					callback(new UserInformation(u.id, u.screen_name, u.description, u.followers_count, u.profile_image_url, u.created_at));
+				}
 			});
+		}
 	}
 
 
@@ -343,14 +421,15 @@ class TestProject extends utils.Adapter {
 	* @param {ioBroker.Message} obj
 	*/
 	onMessage(obj) {
-		this.log.info("test_project - sendTo angekommen");
 		if (typeof obj === "object" && obj.message) {
 			if (obj.command === "send") {
 				// e.g. send email or pushover or whatever
-				this.log.info("send command");
+				this.postTweet(obj.message, (text)=>{
+					this.log.info(TAG + "posted, message: " + text);
+				});
 
 				// Send response in callback if required
-				if (obj.callback) this.sendTo(obj.from, obj.command, "Message received", obj.callback);
+				//if (obj.callback) this.sendTo(obj.from, obj.command, "Message received", obj.callback);
 			} else if (obj.command === "post") {
 				this.postTweet(obj.message, (text)=>{
 					this.log.info(TAG + "posted, message: " + text);
@@ -359,7 +438,7 @@ class TestProject extends utils.Adapter {
 				
 			} else if (obj.command === "dummyPost") {
 				this.postHelloWorldTweet((text)=>{
-					this.log.info(TAG + "dummy posted");
+					this.log.info(TAG + "dummy posted: " + text);
 				});
 			}
 	 	}
@@ -373,8 +452,8 @@ if (module.parent) {
 	/**
 	 * @param {Partial<utils.AdapterOptions>} [options={}]
 	 */
-	module.exports = (options) => new TestProject(options);
+	module.exports = (options) => new TwitterProject(options);
 } else {
 	// otherwise start the instance directly
-	new TestProject();
+	new TwitterProject();
 }
