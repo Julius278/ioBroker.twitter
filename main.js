@@ -421,27 +421,30 @@ class TwitterProject extends utils.Adapter {
 	* @param {ioBroker.Message} obj
 	*/
 	onMessage(obj) {
-		if (typeof obj === "object" && obj.message) {
-			if (obj.command === "send") {
-				// e.g. send email or pushover or whatever
-				this.postTweet(obj.message, (text)=>{
-					this.log.info(TAG + "posted, message: " + text);
-				});
+		if (typeof obj === "object"){
+			if(obj.message) {
+				if (obj.command === "send") {
+					// e.g. send email or pushover or whatever
+					this.postTweet(obj.message, (text)=>{
+						this.log.info(TAG + "posted, message: " + text);
+					});
 
-				// Send response in callback if required
-				//if (obj.callback) this.sendTo(obj.from, obj.command, "Message received", obj.callback);
-			} else if (obj.command === "post") {
-				this.postTweet(obj.message, (text)=>{
-					this.log.info(TAG + "posted, message: " + text);
-				});
-			} else if (obj.command === "auth") {
-				
-			} else if (obj.command === "dummyPost") {
+					// Send response in callback if required
+					//if (obj.callback) this.sendTo(obj.from, obj.command, "Message received", obj.callback);
+				} else if (obj.command === "post") {
+					this.postTweet(obj.message, (text)=>{
+						this.log.info(TAG + "posted, message: " + text);
+					});
+				} else if (obj.command === "auth") {
+					
+				}
+			}
+			if (obj.command === "dummyPost") {
 				this.postHelloWorldTweet((text)=>{
 					this.log.info(TAG + "dummy posted: " + text);
 				});
-			}
-	 	}
+			} 
+		}
 	 }
 
 }
