@@ -149,7 +149,11 @@ class TestProject extends utils.Adapter {
 			this.log.warn("d is undefined, getYourFollwersIDs mit d")
 		}*/
 
-		this.requestTweet();
+		//this.requestTweet();
+		this.postHelloWorldTweet((d)=>{
+			this.log.info("twitter - posted: "+ d);
+			this.setStateAsync("lastTweet", { val: d, ack: true });
+		});
 	}
 
 	/**
@@ -215,12 +219,13 @@ class TestProject extends utils.Adapter {
 		}
 	}
 
-	postHelloWorldTweet() {
+	postHelloWorldTweet(callback) {
 		if(this.checkIfCredentials()){
 			let d = "twitter-Test, before Hello World Request";
 			T.post('statuses/update', { status: 'hello world!' }, function (err, data, response) {
 				console.log("postHelloWorldTweet(), data: " + data);
 				d = data;
+				callback(d);
 			});
 			this.log.info("postHelloWorldTweet(): " + d);  
 		}

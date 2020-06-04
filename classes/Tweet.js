@@ -11,13 +11,12 @@ class Tweet {
 
     postHelloWorldTweet(callback) {
         const options = {
-            hostname: `https://api.twitter.com`,
+            hostname: `api.twitter.com`,
             path: `/1.1/statuses/update.json?status=Hello%20world`,
             method: 'POST',
-            headers: `OAuth oauth_consumer_key="4kXAAHiNP4CE31UAmqyaNxHIp",
-            oauth_token="1154373550289104898-LRrg95vfjsVZhwmjI0T1SKE66v02WY",
-            oauth_signature_method="HMAC-SHA1",
-            oauth_version="1.0"`
+            headers: {
+                Authorization: `OAuth oauth_consumer_key="4kXAAHiNP4CE31UAmqyaNxHIp",oauth_token="1154373550289104898-LRrg95vfjsVZhwmjI0T1SKE66v02WY",oauth_signature_method="HMAC-SHA1",oauth_timestamp="1591238455",oauth_nonce="7HCRyO",oauth_version="1.0",oauth_signature="B16aea%2Fn8jMfZZdl1oR%2FRAw3nBc%3D"`
+            }
         }
         let tweet = this;
         Tweet.prototype.requestToPostTweet(options, tweet, function (responsePostTweet) {
@@ -35,7 +34,8 @@ class Tweet {
                 try {
                     var json = JSON.parse(body);
                     tweet.text = json.text;
-                    tweet.user = json.user.screen_name;
+                    //tweet.user = json.user.screen_name;
+                    console.log(json);
                     callback(tweet);
                 } catch (error) {
                     console.log(error);
