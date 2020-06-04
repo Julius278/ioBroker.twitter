@@ -238,8 +238,6 @@ class TestProject extends utils.Adapter {
 			T.get('followers/ids', { screen_name: this.config.username }, function (err, data, response) {
 				if(err){
 					return err;
-				} else if(data.ids[0]){
-					return data.ids[0];
 				} else {
 					return response;
 				}
