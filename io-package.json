@@ -65,7 +65,9 @@
 		"compact": true,
 		"connectionType": "cloud",
 		"dataSource": "poll",
-		"materialize": true,
+		"messagebox": true,
+        "materialize": true,
+        "subscribe": "messagebox",
 		"message": true,
 		"dependencies": [
 			{
