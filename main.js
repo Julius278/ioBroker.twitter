@@ -91,7 +91,7 @@ class TestProject extends utils.Adapter {
 		await this.setObjectAsync("lastFollower", {
 			type: "state",
 			common: {
-				name: "lastTweet",
+				name: "lastFollower",
 				type: "string",
 				role: "text",
 				read: true,

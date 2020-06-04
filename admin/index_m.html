@@ -57,6 +57,22 @@
 			});
 			callback(obj);
 		}
+
+		function test() {
+        //var newValue = JSON.stringify(getSettings());
+        if (!common.enabled) {
+            showMessage('Enable first the adapter to test notification.');
+            return;
+        }
+        if (changed) {
+            showMessage('First save the settings');
+            return;
+        }
+		//sendTo('pushover.' + instance, 'send', 'This is test notification!');
+		
+        showMessage('Check the log or your pushover app!');
+    }
+
 	</script>
 
 </head>
@@ -105,6 +121,12 @@
 			<div class="col s6 input-field">
 				<input type="password" class="value" id="accessTokenSecret" />
 				<label for="accessTokenSecret" class="translate">access token secret</label>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col s4">
+				<a id="testMessage" class="waves-effect waves-light btn"><i class="material-icons left">notifications_active</i><span class="translate">Test</span></a>
 			</div>
 		</div>
 
