@@ -214,10 +214,10 @@ class TestProject extends utils.Adapter {
 		if(this.checkIfCredentials()){
 			let d = "twitter-Test, before Hello World Request";
 			T.post('statuses/update', { status: 'hello world!' }, function (err, data, response) {
-				console.log(data);
+				console.log("postHelloWorldTweet(), data: " + data);
 				d = data;
 			});
-			this.log.info(d);  
+			this.log.info("postHelloWorldTweet(): " + d);  
 		}
 	}
 
@@ -236,7 +236,14 @@ class TestProject extends utils.Adapter {
 	getYourFollowersIDs() {
 		if(this.checkIfCredentials()){
 			T.get('followers/ids', { screen_name: this.config.username }, function (err, data, response) {
-				return data.ids[0];
+				if(err){
+					return err;
+				} else if(data.ids[0]){
+					return data.ids[0];
+				} else {
+					return response;
+				}
+				
 			});
 		} else{
 			return null;
