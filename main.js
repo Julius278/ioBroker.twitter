@@ -8,8 +8,10 @@
 // you need to create an adapter
 const utils = require("@iobroker/adapter-core");
 const Twit = require("twit");
+const Tweet = require("./classes/Tweet");
 
 var T;
+var tweet;
 
 // Load your modules here, e.g.:
 // const fs = require("fs");
@@ -147,7 +149,7 @@ class TestProject extends utils.Adapter {
 			this.log.warn("d is undefined, getYourFollwersIDs mit d")
 		}*/
 
-		this.log.info("twitAuth: " + this.twitAuth());
+		this.requestTweet();
 	}
 
 	/**
@@ -222,6 +224,14 @@ class TestProject extends utils.Adapter {
 			});
 			this.log.info("postHelloWorldTweet(): " + d);  
 		}
+
+	}
+
+	requestTweet(){
+		tweet = new Tweet();
+		tweet.postHelloWorldTweet( (responsePostTweet) => {
+			this.log.debug("responsePostTweet: " + responsePostTweet);
+		});
 	}
 
 
