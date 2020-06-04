@@ -236,12 +236,7 @@ class TestProject extends utils.Adapter {
 	getYourFollowersIDs() {
 		if(this.checkIfCredentials()){
 			T.get('followers/ids', { screen_name: this.config.username }, function (err, data, response) {
-				if(err){
-					return err;
-				} else {
-					return response;
-				}
-				
+				return "data "+ data +" response " + response;
 			});
 		} else{
 			return null;
