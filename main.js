@@ -10,11 +10,10 @@ const utils = require("@iobroker/adapter-core");
 const Twit = require("twit");
 const Tweet = require("./classes/Tweet");
 
+const TAG = "ioBroker Twitter - "
+
 var T;
 var tweet;
-
-// Load your modules here, e.g.:
-// const fs = require("fs");
 
 class TestProject extends utils.Adapter {
 
@@ -149,11 +148,10 @@ class TestProject extends utils.Adapter {
 			this.log.warn("d is undefined, getYourFollwersIDs mit d")
 		}*/
 
-		//this.requestTweet();
-		this.postHelloWorldTweet((d)=>{
+		/*this.postHelloWorldTweet((d)=>{
 			this.log.info("twitter - posted: "+ d);
 			this.setStateAsync("lastTweet", { val: d, ack: true });
-		});
+		});*/
 	}
 
 	/**
@@ -177,10 +175,10 @@ class TestProject extends utils.Adapter {
 	onObjectChange(id, obj) {
 		if (obj) {
 			// The object was changed
-			this.log.info(`object ${id} changed: ${JSON.stringify(obj)}`);
+			this.log.info(TAG + `object ${id} changed: ${JSON.stringify(obj)}`);
 		} else {
 			// The object was deleted
-			this.log.info(`object ${id} deleted`);
+			this.log.info(TAG + `object ${id} deleted`);
 		}
 	}
 
@@ -192,10 +190,10 @@ class TestProject extends utils.Adapter {
 	onStateChange(id, state) {
 		if (state) {
 			// The state was changed
-			this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
+			this.log.info(TAG + `state ${id} changed: ${state.val} (ack = ${state.ack})`);
 		} else {
 			// The state was deleted
-			this.log.info(`state ${id} deleted`);
+			this.log.info(TAG + `state ${id} deleted`);
 		}
 	}
 
@@ -211,31 +209,26 @@ class TestProject extends utils.Adapter {
 
 	checkIfCredentials(){
 		if(this.config.consumerKey && this.config.consumerSecret && this.config.accessToken && this.config.accessTokenSecret){
-			this.log.info("checkIfCredentials(), all credentials are entered");
+			this.log.info(TAG + "checkIfCredentials(), all credentials are entered");
 			return true;
 		} else {
-			this.log.info("checkIfCredentials(), credentials are incomplete");
+			this.log.info(TAG + "checkIfCredentials(), credentials are incomplete");
 			return false;
 		}
 	}
 
 	postHelloWorldTweet(callback) {
 		if(this.checkIfCredentials()){
-			let d = "twitter-Test, before Hello World Request";
 			T.post('statuses/update', { status: 'hello world!' }, function (err, data, response) {
-				console.log("postHelloWorldTweet(), data: " + data);
-				d = data.text;
-				callback(d);
+				callback(data.text);
 			});
-			this.log.info("postHelloWorldTweet(): " + d);  
 		}
-
 	}
 
 	requestTweet(){
 		tweet = new Tweet();
 		tweet.postHelloWorldTweet( (responsePostTweet) => {
-			this.log.debug("responsePostTweet: " + responsePostTweet);
+			this.log.debug(TAG + "responsePostTweet: " + responsePostTweet);
 		});
 	}
 
@@ -281,7 +274,7 @@ class TestProject extends utils.Adapter {
 				// to the callback.
 				// See https://github.com/ttezel/twit#tgetpath-params-callback
 				// for details.
-				console.log('data', result.data.screen_name);
+				console.log(TAG + 'data', result.data.screen_name);
 				return result.data;
 			});
 	}
