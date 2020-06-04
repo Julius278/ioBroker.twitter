@@ -61,19 +61,17 @@
 		}
 
 		function test() {
-        //var newValue = JSON.stringify(getSettings());
-        if (!common.enabled) {
-            showMessage('Enable first the adapter to test notification.');
-            return;
-        }
-        if (changed) {
-            showMessage('First save the settings');
-            return;
-        }
-		sendTo('test_project.' + instance, 'send', 'This is test message!');
-		
-        showMessage('Check the log or the timeline of your twitter account!');
-    }
+			if (!common.enabled) {
+				showMessage('Enable first the adapter to test notification.');
+				return;
+			}
+			if (changed) {
+				showMessage('First save the settings');
+				return;
+			}
+			sendTo('test_project.' + instance, 'dummyPost');
+			showMessage('Check the log or the timeline of your twitter account!');
+		}
 
 	</script>
 

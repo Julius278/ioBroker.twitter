@@ -200,7 +200,9 @@ class TestProject extends utils.Adapter {
 		}
 	}
 
-	//Set Twitter Credentials from the entered config
+	/**
+	 * Set Twitter Credentials from the entered config in the adapter page
+	 */	 
 	setCredentialsFromConfig(){ 
 		T = new Twit({
 			consumer_key: this.config.consumerKey,
@@ -210,6 +212,10 @@ class TestProject extends utils.Adapter {
 		});
 	}
 
+	/**
+	 * checks, if all credentials are entered in the adapter page
+	 * 
+	 */
 	checkIfCredentials(){
 		if(this.config.consumerKey && this.config.consumerSecret && this.config.accessToken && this.config.accessTokenSecret){
 			this.log.info(TAG + "checkIfCredentials(), all credentials are entered");
@@ -220,24 +226,51 @@ class TestProject extends utils.Adapter {
 		}
 	}
 
+	/**
+	 *
+	 * post a dummy hello world tweet to proof, that everything works fine
+	 * 
+	 * @param {*} callback 
+	 */
 	postHelloWorldTweet(callback) {
-		if(this.checkIfCredentials()){
-			T.post('statuses/update', { status: 'hello world!' }, function (err, data, response) {
+		let s = Math.floor(Math.random() * 100) + 1;
+		let tweetText = 'Hello world! This is my iobroker test tweet. Random number: '+s;
+		/*if(this.checkIfCredentials()){
+			T.post('statuses/update', { status: text }, function (err, data, response) {
 				callback(data.text);
 			});
-		}
-	}
-
-	requestTweet(){
-		tweet = new Tweet();
-		tweet.postHelloWorldTweet( (responsePostTweet) => {
-			this.log.debug(TAG + "responsePostTweet: " + responsePostTweet);
+		}*/
+		this.postTweet(tweetText, (postedText)=>{
+			callback(postedText);
 		});
 	}
 
-
-
+	/**
+	 * 
+	 * Post a tweet with your own text
+	 * 
+	 * @param {*} tweetText 
+	 * @param {*} callback 
+	 */
+	postTweet(tweetText, callback) {
+		if(this.checkIfCredentials()){
+			T.post('statuses/update', { status: tweetText }, function (err, data, response) {
+				if(err){
+					callback(err);
+				} else {
+					callback(data.text);
+				}
+			});
+		}
+	}
 	
+	/**
+	 * 
+	 * @param {*} consumer_key 
+	 * @param {*} consumer_secret 
+	 * @param {*} access_token 
+	 * @param {*} access_token_secret 
+	 */
 	setCredentials(consumer_key, consumer_secret, access_token, access_token_secret) {
 		T = new Twit({
 			consumer_key: consumer_key,
@@ -247,18 +280,33 @@ class TestProject extends utils.Adapter {
 		});
 	}
 	
-	getYourFollowersIDs() {
+	/**
+	 * needs more implementation
+	 * 
+	 * Get a list of the IDs of your followers on twitter
+	 * 
+	 * @param {*} callback 
+	 */
+	getListOfYourFollowersIDs(callback) {
 		if(this.checkIfCredentials()){
 			T.get('followers/ids', { screen_name: this.config.username }, function (err, data, response) {
-				return "data "+ data +" response " + response;
+				if(err){
+					callback(err);
+				} else {
+					callback(data);
+				}
 			});
-			return
-		} else{
-			return null;
 		}
 	}
 	
-	getYourLastFollower() {
+	/**
+	 * needs more implementation
+	 * 
+	 * get the ID of your last follower on twitter 
+	 * 
+	 * @param {*} callback 
+	 */
+	getYourLastFollower(callback) {
 		T.get('followers/list', { screen_name: this.config.username }, function (err, data, response) {
 		 	console.log(data.users[0].id);
 		  	console.log(data.users[0].name);
@@ -266,7 +314,13 @@ class TestProject extends utils.Adapter {
 		});
 	}  
 	
-	twitAuth(){
+	/**
+	 * 
+	 * Authorize at twitter and get some profile information 
+	 * 
+	 * @param {*} callback 
+	 */
+	twitAuth(callback){
 		return T.get('account/verify_credentials', { skip_status: true })
 			.catch(function (err) {
 				console.log('caught error', err.stack)
@@ -282,20 +336,12 @@ class TestProject extends utils.Adapter {
 			});
 	}
 
-	/*
-	//	funktioniert noch nicht..
 
-	getUser(id) {
-		T.get('users/:id', { id: id }, function (err, data, response) {
-		  	console.log(data)
-		});
-	}*/
-
-	// /**
-	//  * Some message was sent to this instance over message box. Used by email, pushover, text2speech, ...
-	//  * Using this method requires "common.message" property to be set to true in io-package.json
-	//  * @param {ioBroker.Message} obj
-	//  */
+	/**
+	* Some message was sent to this instance over message box. Used by email, pushover, text2speech, ...
+	* Using this method requires "common.message" property to be set to true in io-package.json
+	* @param {ioBroker.Message} obj
+	*/
 	onMessage(obj) {
 		this.log.info("test_project - sendTo angekommen");
 		if (typeof obj === "object" && obj.message) {
@@ -305,87 +351,21 @@ class TestProject extends utils.Adapter {
 
 				// Send response in callback if required
 				if (obj.callback) this.sendTo(obj.from, obj.command, "Message received", obj.callback);
+			} else if (obj.command === "post") {
+				this.postTweet(obj.message, (text)=>{
+					this.log.info(TAG + "posted, message: " + text);
+				});
+			} else if (obj.command === "auth") {
+				
+			} else if (obj.command === "dummyPost") {
+				this.postHelloWorldTweet((text)=>{
+					this.log.info(TAG + "dummy posted");
+				});
 			}
 	 	}
 	 }
 
 }
-function sendNotification(adapter, message, callback) {
-
-	adapter.log.debug("Test, sendTo hat funktioniert");
-
-	if(message){
-		console.log("message");
-		adapter.log.debug("Test, message if callback");
-		callback();
-	}
-}
-
-function processMessage(adapter, obj) {
-    sendNotification(adapter, obj.message, (err, response) =>
-        obj.callback && adapter.sendTo(obj.from, 'send', { error: err, response: response}, obj.callback));
-}
-
-/*
-function sendNotification(adapter, message, callback) {
-    message = message || {};
-
-    if (!pushover) {
-        if (adapter.config.user && adapter.config.token) {
-            pushover = new Pushover({
-                user:  adapter.config.user,
-                token: adapter.config.token,
-                onerror: onError
-            });
-        } else {
-            adapter.log.error('Cannot send notification while not configured');
-        }
-    }
-
-    if (!pushover) {
-        return;
-    }
-
-    if (typeof message !== 'object') {
-        message = {message};
-    }
-    if (message.hasOwnProperty('token')) {
-        pushover.token = message.token;
-    } else {
-        pushover.token = adapter.config.token;
-    }
-    message.title     = message.title     || adapter.config.title;
-    message.sound     = message.sound     || (adapter.config.sound ? adapter.config.sound : undefined);
-    message.priority  = message.priority  || adapter.config.priority;
-    message.url       = message.url       || adapter.config.url;
-    message.url_title = message.url_title || adapter.config.url_title;
-    message.device    = message.device    || adapter.config.device;
-    message.message   = message.message   || '';
-
-    // if timestamp in ms => make seconds // if greater than 2000.01.01 00:00:00
-    if (message.timestamp && message.timestamp > 946681200000) {
-        message.timestamp = Math.round(message.timestamp / 1000);
-    }
-
-    // mandatory parameters if priority is high (2)
-    if (message.priority === 2) {
-        message.retry  = parseInt(message.retry, 10)  || 60;
-        message.expire = parseInt(message.expire, 10) || 3600;
-    }
-
-    adapter.log.info('Send pushover notification: ' + JSON.stringify(message));
-
-    pushover.send(message, (err, result) => {
-        if (err) {
-            adapter.log.error('Cannot send notification: ' + JSON.stringify(err));
-            if (callback) callback(err);
-            return false;
-        } else {
-            if (callback) callback(null, result);
-            return true;
-        }
-	});
-}*/
 
 // @ts-ignore parent is a valid property on module
 if (module.parent) {
