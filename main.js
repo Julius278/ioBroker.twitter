@@ -320,6 +320,11 @@ function sendNotification(adapter, message, callback) {
 	}
 }
 
+function processMessage(adapter, obj) {
+    sendNotification(adapter, obj.message, (err, response) =>
+        obj.callback && adapter.sendTo(obj.from, 'send', { error: err, response: response}, obj.callback));
+}
+
 /*
 function sendNotification(adapter, message, callback) {
     message = message || {};
