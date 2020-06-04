@@ -1,5 +1,6 @@
 .git
 .idea
+.vscode
 node_modules/
 nbproject/
 .vs*/
@@ -32,3 +33,6 @@ admin/i18n
 
 # maintenance scripts
 maintenance/**
+
+# local test file
+test.js
