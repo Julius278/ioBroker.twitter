@@ -151,8 +151,8 @@ class TestProject extends utils.Adapter {
 
 		//this.requestTweet();
 		this.postHelloWorldTweet((d)=>{
-			this.log.info("twitter - posted: "+ d);
-			this.setStateAsync("lastTweet", { val: d, ack: true });
+			this.log.info("twitter - posted: "+ d.text);
+			this.setStateAsync("lastTweet", { val: d.text, ack: true });
 		});
 	}
 
