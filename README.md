@@ -1,16 +1,16 @@
-![Logo](admin/test_project.png)
-# ioBroker.test_project
+![Logo](admin/twitter.png)
+# ioBroker.twitter
 
-[![NPM version](http://img.shields.io/npm/v/iobroker.test_project.svg)](https://www.npmjs.com/package/iobroker.test_project)
-[![Downloads](https://img.shields.io/npm/dm/iobroker.test_project.svg)](https://www.npmjs.com/package/iobroker.test_project)
-![Number of Installations (latest)](http://iobroker.live/badges/test_project-installed.svg)
-![Number of Installations (stable)](http://iobroker.live/badges/test_project-stable.svg)
-[![Dependency Status](https://img.shields.io/david/Julius278/iobroker.test_project.svg)](https://david-dm.org/Julius278/iobroker.test_project)
-[![Known Vulnerabilities](https://snyk.io/test/github/Julius278/ioBroker.test_project/badge.svg)](https://snyk.io/test/github/Julius278/ioBroker.test_project)
+[![NPM version](http://img.shields.io/npm/v/iobroker.twitter.svg)](https://www.npmjs.com/package/iobroker.twitter)
+[![Downloads](https://img.shields.io/npm/dm/iobroker.twitter.svg)](https://www.npmjs.com/package/iobroker.twitter)
+![Number of Installations (latest)](http://iobroker.live/badges/twitter-installed.svg)
+![Number of Installations (stable)](http://iobroker.live/badges/twitter-stable.svg)
+[![Dependency Status](https://img.shields.io/david/Julius278/iobroker.twitter.svg)](https://david-dm.org/Julius278/iobroker.twitter)
+[![Known Vulnerabilities](https://snyk.io/test/github/Julius278/ioBroker.twitter/badge.svg)](https://snyk.io/test/github/Julius278/ioBroker.twitter)
 
-[![NPM](https://nodei.co/npm/iobroker.test_project.png?downloads=true)](https://nodei.co/npm/iobroker.test_project/)
+[![NPM](https://nodei.co/npm/iobroker.twitter.png?downloads=true)](https://nodei.co/npm/iobroker.twitter/)
 
-## test_project adapter for ioBroker
+## twitter adapter for ioBroker
 
 Describe your project here
 
@@ -45,4 +45,4 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.# ioBroker.test_project
+SOFTWARE.# ioBroker.twitter

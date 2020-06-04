@@ -2,17 +2,17 @@
 "use strict";
 
 systemDictionary = {
-	"test_project adapter settings": {
-		"en": "Adapter settings for test_project",
-		"de": "Adaptereinstellungen für test_project",
-		"ru": "Настройки адаптера для test_project",
-		"pt": "Configurações do adaptador para test_project",
-		"nl": "Adapterinstellingen voor test_project",
-		"fr": "Paramètres d'adaptateur pour test_project",
-		"it": "Impostazioni dell'adattatore per test_project",
-		"es": "Ajustes del adaptador para test_project",
-		"pl": "Ustawienia adaptera dla test_project",
-		"zh-cn": "test_project的适配器设置"
+	"Twitter adapter settings": {
+		"en": "Adapter settings for Twitter",
+		"de": "Adaptereinstellungen für Twitter",
+		"ru": "Настройки адаптера для Twitter",
+		"pt": "Configurações do adaptador para Twitter",
+		"nl": "Adapterinstellingen voor Twitter",
+		"fr": "Paramètres d'adaptateur pour Twitter",
+		"it": "Impostazioni dell'adattatore per Twitter",
+		"es": "Ajustes del adaptador para Twitter",
+		"pl": "Ustawienia adaptera dla Twitter",
+		"zh-cn": "Twitter的适配器设置"
 	},
 	"option1": {
 		"en": "option1",
