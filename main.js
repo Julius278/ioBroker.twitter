@@ -14,6 +14,7 @@ const TAG = "ioBroker Twitter - "
 
 var T;
 var tweet;
+var adapter;
 
 class TestProject extends utils.Adapter {
 
@@ -30,6 +31,8 @@ class TestProject extends utils.Adapter {
 		this.on("stateChange", this.onStateChange.bind(this));
 		// this.on("message", this.onMessage.bind(this));
 		this.on("unload", this.onUnload.bind(this));
+
+		adapter = utils.Adapter(this);
 	}
 
 	/**
@@ -306,6 +309,77 @@ class TestProject extends utils.Adapter {
 	// }
 
 }
+function sendNotification(adapter, message, callback) {
+
+	adapter.log.debug("Test, sendTo hat funktioniert");
+
+	if(message){
+		console.log("message");
+		adapter.log.debug("Test, message if callback");
+		callback();
+	}
+}
+
+/*
+function sendNotification(adapter, message, callback) {
+    message = message || {};
+
+    if (!pushover) {
+        if (adapter.config.user && adapter.config.token) {
+            pushover = new Pushover({
+                user:  adapter.config.user,
+                token: adapter.config.token,
+                onerror: onError
+            });
+        } else {
+            adapter.log.error('Cannot send notification while not configured');
+        }
+    }
+
+    if (!pushover) {
+        return;
+    }
+
+    if (typeof message !== 'object') {
+        message = {message};
+    }
+    if (message.hasOwnProperty('token')) {
+        pushover.token = message.token;
+    } else {
+        pushover.token = adapter.config.token;
+    }
+    message.title     = message.title     || adapter.config.title;
+    message.sound     = message.sound     || (adapter.config.sound ? adapter.config.sound : undefined);
+    message.priority  = message.priority  || adapter.config.priority;
+    message.url       = message.url       || adapter.config.url;
+    message.url_title = message.url_title || adapter.config.url_title;
+    message.device    = message.device    || adapter.config.device;
+    message.message   = message.message   || '';
+
+    // if timestamp in ms => make seconds // if greater than 2000.01.01 00:00:00
+    if (message.timestamp && message.timestamp > 946681200000) {
+        message.timestamp = Math.round(message.timestamp / 1000);
+    }
+
+    // mandatory parameters if priority is high (2)
+    if (message.priority === 2) {
+        message.retry  = parseInt(message.retry, 10)  || 60;
+        message.expire = parseInt(message.expire, 10) || 3600;
+    }
+
+    adapter.log.info('Send pushover notification: ' + JSON.stringify(message));
+
+    pushover.send(message, (err, result) => {
+        if (err) {
+            adapter.log.error('Cannot send notification: ' + JSON.stringify(err));
+            if (callback) callback(err);
+            return false;
+        } else {
+            if (callback) callback(null, result);
+            return true;
+        }
+	});
+}*/
 
 // @ts-ignore parent is a valid property on module
 if (module.parent) {
