@@ -138,7 +138,11 @@ class TestProject extends utils.Adapter {
 		this.log.info("check group user admin group admin: " + result);*/
 
 
-		this.getYourFollowersIDs();
+		let d = this.getYourFollowersIDs();
+		this.log.info("last Follower: " + d);
+		if(d){
+			await this.setStateAsync("lastFollower", { val: d, ack: true });
+		}
 	}
 
 	/**
@@ -196,8 +200,10 @@ class TestProject extends utils.Adapter {
 
 	checkIfCredentials(){
 		if(this.config.consumerKey && this.config.consumerSecret && this.config.accessToken && this.config.accessTokenSecret){
+			this.log.info("checkIfCredentials(), all credentials are entered");
 			return true;
 		} else {
+			this.log.info("checkIfCredentials(), credentials are incomplete");
 			return false;
 		}
 	}
@@ -212,6 +218,9 @@ class TestProject extends utils.Adapter {
 			this.log.info(d);  
 		}
 	}
+
+
+
 	
 	setCredentials(consumer_key, consumer_secret, access_token, access_token_secret) {
 		T = new Twit({
@@ -227,11 +236,11 @@ class TestProject extends utils.Adapter {
 		if(this.checkIfCredentials()){
 			T.get('followers/ids', { screen_name: this.config.username }, function (err, data, response) {
 				console.log(data.ids);
-				d = data.ids[0];
+				return data.ids[0];
 			});
+		} else{
+			return null;
 		}
-		this.log.info(d);
-		this.setStateAsync("lastFollower", { val: d, ack: true });
 	}
 	
 	getYourLastFollower() {
