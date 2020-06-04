@@ -139,9 +139,11 @@ class TestProject extends utils.Adapter {
 
 
 		let d = this.getYourFollowersIDs();
-		this.log.info("last Follower: " + d);
+		this.log.info("last Follower: " + this.getYourFollowersIDs());
 		if(d){
 			await this.setStateAsync("lastFollower", { val: d, ack: true });
+		} else {
+			this.log.warn("d is undefined, getYourFollwersIDs mit d")
 		}
 	}
 
@@ -232,10 +234,8 @@ class TestProject extends utils.Adapter {
 	}
 	
 	getYourFollowersIDs() {
-		let d = "twitter-Test, before Hello World Request";
 		if(this.checkIfCredentials()){
 			T.get('followers/ids', { screen_name: this.config.username }, function (err, data, response) {
-				console.log(data.ids);
 				return data.ids[0];
 			});
 		} else{
