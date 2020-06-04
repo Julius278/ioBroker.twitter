@@ -41,6 +41,8 @@
 			onChange(false);
 			// reinitialize all the Materialize labels on the page if you are dynamically adding inputs:
 			if (M) M.updateTextFields();
+
+			$('#test').click(test);
 		}
 
 		// This will be called by the admin adapter when the user presses the save button
@@ -70,7 +72,7 @@
         }
 		//sendTo('pushover.' + instance, 'send', 'This is test notification!');
 		
-        showMessage('Check the log or your pushover app!');
+        showMessage('Check the log or the timeline of yout twitter account!');
     }
 
 	</script>
