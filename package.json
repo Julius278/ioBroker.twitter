@@ -1,12 +1,12 @@
 {
-  "name": "iobroker.test_project",
+  "name": "iobroker.twitter",
   "version": "0.0.1",
-  "description": "test_project",
+  "description": "Twitter",
   "author": {
     "name": "Julius278",
     "email": "iobroker@juliuslauterbach.de"
   },
-  "homepage": "https://github.com/Julius278/ioBroker.test_project",
+  "homepage": "https://github.com/Julius278/ioBroker.twitter",
   "license": "MIT",
   "keywords": [
     "ioBroker",
@@ -16,7 +16,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/Julius278/ioBroker.test_project"
+    "url": "https://github.com/Julius278/ioBroker.twitter"
   },
   "dependencies": {
     "@iobroker/adapter-core": "^2.4.0",
@@ -52,7 +52,7 @@
     "lint": "eslint"
   },
   "bugs": {
-    "url": "https://github.com/Julius278/ioBroker.test_project/issues"
+    "url": "https://github.com/Julius278/ioBroker.twitter/issues"
   },
   "readmeFilename": "README.md"
 }
