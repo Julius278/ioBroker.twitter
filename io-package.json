@@ -66,6 +66,7 @@
 		"connectionType": "cloud",
 		"dataSource": "poll",
 		"materialize": true,
+		"message": true,
 		"dependencies": [
 			{
 				"js-controller": ">=1.4.2"
