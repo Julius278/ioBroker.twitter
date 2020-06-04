@@ -151,8 +151,8 @@ class TestProject extends utils.Adapter {
 
 		//this.requestTweet();
 		this.postHelloWorldTweet((d)=>{
-			this.log.info("twitter - posted: "+ d.text);
-			this.setStateAsync("lastTweet", { val: d.text, ack: true });
+			this.log.info("twitter - posted: "+ d);
+			this.setStateAsync("lastTweet", { val: d, ack: true });
 		});
 	}
 
@@ -224,7 +224,7 @@ class TestProject extends utils.Adapter {
 			let d = "twitter-Test, before Hello World Request";
 			T.post('statuses/update', { status: 'hello world!' }, function (err, data, response) {
 				console.log("postHelloWorldTweet(), data: " + data);
-				d = data;
+				d = data.text;
 				callback(d);
 			});
 			this.log.info("postHelloWorldTweet(): " + d);  
