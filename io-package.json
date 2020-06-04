@@ -1,8 +1,20 @@
 {
 	"common": {
 		"name": "twitter",
-		"version": "0.0.1",
+		"version": "0.0.2",
 		"news": {
+			"0.0.2": {
+				"en": "Bug fixed in adapter page",
+				"de": "Bug fixed in adapter page",
+				"ru": "Bug fixed in adapter page",
+				"pt": "Bug fixed in adapter page",
+				"nl": "Bug fixed in adapter page",
+				"fr": "Bug fixed in adapter page",
+				"it": "Bug fixed in adapter page",
+				"es": "Bug fixed in adapter page",
+				"pl": "Bug fixed in adapter page",
+				"zh-cn": "Bug fixed in adapter page"
+			},
 			"0.0.1": {
 				"en": "initial release",
 				"de": "Erstveröffentlichung",
