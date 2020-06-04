@@ -147,7 +147,7 @@ class TestProject extends utils.Adapter {
 			this.log.warn("d is undefined, getYourFollwersIDs mit d")
 		}*/
 
-		this.log.info(this.twitAuth());
+		this.log.info("twitAuth: " + this.twitAuth());
 	}
 
 	/**
@@ -256,7 +256,7 @@ class TestProject extends utils.Adapter {
 	}  
 	
 	twitAuth(){
-		T.get('account/verify_credentials', { skip_status: true })
+		return T.get('account/verify_credentials', { skip_status: true })
 			.catch(function (err) {
 				console.log('caught error', err.stack)
 			})
@@ -266,10 +266,9 @@ class TestProject extends utils.Adapter {
 				// to the callback.
 				// See https://github.com/ttezel/twit#tgetpath-params-callback
 				// for details.
-				console.log('data', result.data);
+				console.log('data', result.data.screen_name);
 				return result.data;
 			});
-		return "test";
 	}
 
 	/*
