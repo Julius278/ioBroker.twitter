@@ -138,13 +138,27 @@ class TestProject extends utils.Adapter {
 		this.log.info("check group user admin group admin: " + result);*/
 
 
+		/*
 		let d = this.getYourFollowersIDs();
 		this.log.info("last Follower: " + this.getYourFollowersIDs());
 		if(d){
 			await this.setStateAsync("lastFollower", { val: d, ack: true });
 		} else {
 			this.log.warn("d is undefined, getYourFollwersIDs mit d")
-		}
+		}*/
+
+		T.get('account/verify_credentials', { skip_status: true })
+			.catch(function (err) {
+				console.log('caught error', err.stack)
+			})
+			.then(function (result) {
+				// `result` is an Object with keys "data" and "resp".
+				// `data` and `resp` are the same objects as the ones passed
+				// to the callback.
+				// See https://github.com/ttezel/twit#tgetpath-params-callback
+				// for details.
+				console.log('data', result.data);
+			});
 	}
 
 	/**
@@ -238,6 +252,7 @@ class TestProject extends utils.Adapter {
 			T.get('followers/ids', { screen_name: this.config.username }, function (err, data, response) {
 				return "data "+ data +" response " + response;
 			});
+			return
 		} else{
 			return null;
 		}
