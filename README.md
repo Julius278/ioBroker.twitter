@@ -18,6 +18,27 @@ Describe your project here
 This section is intended for the developer. It can be deleted later
 
 ### Getting started
+1. First you have to create an [Twitter App](https://developer.twitter.com/en/apps/create).
+2. After many steps you get the following keys and tokens:
+![Keys and Tokens](img/Keys_and_Tokens.png)
+3. Insert them in the adapter page
+4. There is an "Test" button, which posts an "Hello world!" message to your timeline to proof, that it works.
+
+### Usage
+To post or get information from ScriptEngine just write: 
+
+```
+// post a tweet to your timeline via twitter adapter
+sendTo("twitter", "send", "message body");
+sendTo("twitter", "post", "message body");
+
+// it's also possible to manage different accounts and post
+sendTo("twitter.1", "send", "message body");
+sendTo("twitter.1", "post", "message body");
+
+// If you want to test the dummyPost (hello world) tweet
+sendTo("twitter", "dummyPost");
+```
 
 ## Changelog
 
