@@ -66,4 +66,4 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.# ioBroker.twitter
 
-Copyright (c) 2021 Julius278 <iobroker@juliuslauterbach.de>
+Copyright (c) 2022 Julius278 <iobroker@juliuslauterbach.de>
