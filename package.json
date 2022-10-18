@@ -50,11 +50,7 @@
     "test:unit": "mocha test/unit --exit",
     "test:integration": "mocha test/integration --exit",
     "test": "npm run test:js && npm run test:package",
-    "lint": "eslint",
-    "preinstall": "npx npm-force-resolutions"
-  },
-  "resolutions": {
-    "glob-parent": "^6.0.1"
+    "lint": "eslint"
   },
   "bugs": {
     "url": "https://github.com/Julius278/ioBroker.twitter/issues"
