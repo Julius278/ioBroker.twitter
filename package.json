@@ -54,7 +54,7 @@
     "preinstall": "npx npm-force-resolutions"
   },
   "resolutions": {
-    "glob-parent": "^6.0.0"
+    "glob-parent": "^5.1.2"
  },
   "bugs": {
     "url": "https://github.com/Julius278/ioBroker.twitter/issues"
