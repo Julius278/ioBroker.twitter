@@ -1,8 +1,20 @@
 {
 	"common": {
 		"name": "twitter",
-		"version": "0.0.4",
+		"version": "0.0.5",
 		"news": {
+			"0.0.5": {
+				"en": "Updated dependencies",
+				"de": "Updated dependencies",
+				"ru": "Updated dependencies",
+				"pt": "Updated dependencies",
+				"nl": "Updated dependencies",
+				"fr": "Updated dependencies",
+				"it": "Updated dependencies",
+				"es": "Updated dependencies",
+				"pl": "Updated dependencies",
+				"zh-cn": "Updated dependencies"
+			},
 			"0.0.4": {
 				"en": "Updated dependencies",
 				"de": "Updated dependencies",
